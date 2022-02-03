@@ -6,17 +6,31 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_task"
     android:gravity="center"
-    android:padding="16dp"
+    android:padding="30dp"
+    android:orientation="vertical"
     tools:context=".SplashActivity">
+
+    <ImageView
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:id="@+id/iv_logo"
+        android:layout_weight="1"
+        android:layout_marginTop="150dp"
+        android:layout_gravity="bottom|center"
+        android:src="@drawable/app_icon"/>
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:alpha="0.0"
-        android:text="Task Manager App"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display2"
+        android:text="Welcome to Task Manager"
+        android:layout_weight="1"
+        android:textSize="32sp"
         android:textColor="@color/white"
+        android:layout_gravity="bottom"
+        android:gravity="bottom|center"
+        android:layout_marginBottom="90dp"
         android:textStyle="bold" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

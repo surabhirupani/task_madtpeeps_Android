@@ -10,18 +10,23 @@ import android.os.Handler;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SplashActivity extends AppCompatActivity {
     TextView tvTitle;
-    int SPLASH_TIME_OUT = 6000;
+    ImageView ivLogo;
+    int SPLASH_TIME_OUT = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        getSupportActionBar().hide();
+
         tvTitle = findViewById(R.id.tvTitle);
+        ivLogo = findViewById(R.id.iv_logo);
 
        setAnimation();
 
@@ -50,5 +55,8 @@ public class SplashActivity extends AppCompatActivity {
         animatorSet.play(scaleXAnimation).with(scaleYAnimation).with(alphaAnimation);
         animatorSet.setStartDelay(2000);
         animatorSet.start();
+
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.fade);
+        ivLogo.startAnimation(anim);
     }
 }
