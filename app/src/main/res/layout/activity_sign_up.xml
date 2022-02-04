@@ -7,6 +7,15 @@
     android:orientation="vertical"
     tools:context=".SignUpActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:fitsSystemWindows="false"
+        android:theme="@style/ToolbarStyle"
+        app:contentInsetStartWithNavigation="0dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -97,9 +106,9 @@
             android:layout_marginTop="25dp"
             android:layout_marginStart="62dp"
             android:layout_marginEnd="62dp"
-            android:text="Submit"
+            android:text="Sign Up"
             android:textAllCaps="false"
-            android:id="@+id/btn_submit"
+            android:id="@+id/btn_register"
             android:background="@drawable/btn_rect_white_overlay"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
