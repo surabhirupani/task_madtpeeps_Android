@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_task"
+    android:background="@color/purple_500"
     android:gravity="center"
     android:padding="30dp"
     android:orientation="vertical"
@@ -15,9 +15,9 @@
         android:layout_height="170dp"
         android:id="@+id/iv_logo"
         android:layout_weight="1"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:layout_gravity="bottom|center"
-        android:src="@drawable/app_icon"/>
+        android:src="@drawable/task_icon"/>
 
     <TextView
         android:id="@+id/tvTitle"
@@ -26,10 +26,10 @@
         android:alpha="0.0"
         android:text="Welcome to Task Manager"
         android:layout_weight="1"
-        android:textSize="32sp"
+        android:textSize="27sp"
         android:textColor="@color/white"
         android:layout_gravity="bottom"
-        android:gravity="bottom|center"
+        android:gravity="top|center"
         android:layout_marginBottom="90dp"
         android:textStyle="bold" />
 
