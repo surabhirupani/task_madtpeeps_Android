@@ -1,4 +1,4 @@
-package com.example.task_madtpeeps_android;
+package com.example.task_madtpeeps_android.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +12,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.task_madtpeeps_android.R;
 
 public class SplashActivity extends AppCompatActivity {
     TextView tvTitle;

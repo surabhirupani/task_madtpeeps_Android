@@ -1,4 +1,4 @@
-package com.example.task_madtpeeps_android;
+package com.example.task_madtpeeps_android.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.task_madtpeeps_android.R;
 
 public class SignUpActivity extends AppCompatActivity {
     TextView tv_login;
