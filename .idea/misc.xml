@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_empty_todolist.xml" value="0.1535" />
         <entry key="app/src/main/res/drawable/btn_rect_white_overlay.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_add.xml" value="0.1535" />
+        <entry key="app/src/main/res/drawable/ic_empty_todolist.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
