@@ -99,6 +99,7 @@
             android:layout_marginEnd="62dp"
             android:text="Submit"
             android:textAllCaps="false"
+            android:id="@+id/btn_submit"
             android:background="@drawable/btn_rect_white_overlay"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -118,6 +119,8 @@
             android:layout_height="wrap_content"
             android:text="LogIn"
             android:layout_marginLeft="5dp"
+            android:id="@+id/tv_login"
+            android:textStyle="bold"
             android:textColor="@color/purple_500"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 

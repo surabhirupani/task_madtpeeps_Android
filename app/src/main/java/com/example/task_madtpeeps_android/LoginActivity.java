@@ -8,22 +8,22 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-public class SignUpActivity extends AppCompatActivity {
-    TextView tv_login;
+public class LoginActivity extends AppCompatActivity {
+    TextView tvSignUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_login);
 
         getSupportActionBar().hide();
-
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        tv_login = findViewById(R.id.tv_login);
 
-        tv_login.setOnClickListener(new View.OnClickListener() {
+        tvSignUp = findViewById(R.id.tvSignUp);
+
+        tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
+                Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(i);
                 finish();
             }
