@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.task_madtpeeps_android.R;
@@ -16,6 +17,8 @@ import com.example.task_madtpeeps_android.R;
 public class SignUpActivity extends AppCompatActivity {
     TextView tv_login;
     Button btn_register;
+    private EditText et_fullname, et_username, et_email, et_pwd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,10 @@ public class SignUpActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         tv_login = findViewById(R.id.tv_login);
         btn_register = findViewById(R.id.btn_register);
+        et_pwd = findViewById(R.id.et_pwd);
+        et_fullname = findViewById(R.id.et_fullname);
+        et_username = findViewById(R.id.et_username);
+        et_email = findViewById(R.id.et_email);
 
         initToolbar();
 
@@ -39,11 +46,16 @@ public class SignUpActivity extends AppCompatActivity {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SignUpActivity.this, MainActivity.class);
-                startActivity(i);
-                finish();
+                validateFields();
+//                Intent i = new Intent(SignUpActivity.this, MainActivity.class);
+//                startActivity(i);
+//                finish();
             }
         });
+    }
+
+    private void validateFields() {
+
     }
 
     private void initToolbar() {
