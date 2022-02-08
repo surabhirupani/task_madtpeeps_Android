@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:padding="10dp"
+                android:id="@+id/iv_logout"
                 android:src="@drawable/ic_baseline_power_settings_new_24"
                 />
 
@@ -189,7 +190,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewTodoList"
+            android:id="@+id/recyclerViewCategoryList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp" />
@@ -216,7 +217,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Empty List yet!"
+            android:text="No Categories Added!"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
             android:textColor="@color/purple_500" />
 
@@ -234,11 +235,5 @@
         android:tint="@color/white"
         app:rippleColor="@android:color/white"
         app:srcCompat="@drawable/ic_add" />
-
-    <FrameLayout
-        android:id="@+id/bottomSheet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/bottom_sheet_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
