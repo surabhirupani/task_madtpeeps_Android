@@ -12,4 +12,14 @@ public interface DAO {
     //Insert Querys
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertUser(User user);
+
+    @Query("SELECT COUNT(*) FROM user WHERE userName = :userName OR userMail = :userMail")
+    Integer signUpControl(String userName, String userMail);
+
+    //Select Querys
+    @Query("SELECT * FROM user WHERE userName = :userName AND userPassword = :password")
+    User login(String userName, String password);
+
+    @Query("SELECT * FROM user WHERE userName = :userName")
+    User loginControl(String userName);
 }
