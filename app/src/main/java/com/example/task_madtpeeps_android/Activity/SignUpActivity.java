@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -18,12 +19,16 @@ import com.example.task_madtpeeps_android.Database.AppDatabase;
 import com.example.task_madtpeeps_android.Database.DAO;
 import com.example.task_madtpeeps_android.Model.User;
 import com.example.task_madtpeeps_android.R;
+import com.example.task_madtpeeps_android.Utils;
+import com.google.gson.Gson;
 
 public class SignUpActivity extends AppCompatActivity {
     TextView tv_login;
     Button btn_register;
     private EditText et_fullname, et_username, et_email, et_pwd;
     private DAO dao;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         dao = AppDatabase.getDb(this).getDAO();
+        preferences = getSharedPreferences(Utils.APP_NAME, MODE_PRIVATE);
         tv_login = findViewById(R.id.tv_login);
         btn_register = findViewById(R.id.btn_register);
         et_pwd = findViewById(R.id.et_pwd);
@@ -86,12 +92,30 @@ public class SignUpActivity extends AppCompatActivity {
             user.setUserPassword(et_pwd.getText().toString());
             dao.insertUser(user);
             Toast.makeText(getApplicationContext(), "Sign Up Successfully!", Toast.LENGTH_LONG).show();
-            Intent i = new Intent(SignUpActivity.this, MainActivity.class);
-            startActivity(i);
-            finish();
+            createLoginSession(et_username.getText().toString());
+            openMainActivity(user);
         } else {
             Toast.makeText(getApplicationContext(), "User already registered!", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void openMainActivity(User user) {
+        Bundle bundle = new Bundle();
+        bundle.putString("user", new Gson().toJson(user));
+        Intent signupSuccessIntent = new Intent(SignUpActivity.this, MainActivity.class);
+        signupSuccessIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        signupSuccessIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        signupSuccessIntent.putExtras(bundle);
+        startActivity(signupSuccessIntent);
+        finish();
+    }
+
+
+    public void createLoginSession(String userName) {
+        editor = preferences.edit();
+        editor.putBoolean(Utils.loginControlKey, true);
+        editor.putString(Utils.loginUserNameKey, userName);
+        editor.apply();
     }
 
     private void initToolbar() {
