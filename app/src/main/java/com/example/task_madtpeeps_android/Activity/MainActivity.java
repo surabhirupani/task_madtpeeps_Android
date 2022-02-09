@@ -3,24 +3,42 @@ package com.example.task_madtpeeps_android.Activity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.task_madtpeeps_android.Adapters.CategoryListAdapter;
 import com.example.task_madtpeeps_android.Database.AppDatabase;
 import com.example.task_madtpeeps_android.Database.DAO;
+import com.example.task_madtpeeps_android.Interfaces.RecyclerListClickListener;
+import com.example.task_madtpeeps_android.Model.Category;
 import com.example.task_madtpeeps_android.Model.User;
 import com.example.task_madtpeeps_android.R;
 import com.example.task_madtpeeps_android.Utils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvExpiredCount;
     private ImageView iv_logout;
     private View llEmptyBox;
+    private List<Category> categoryList;
+    private CategoryListAdapter categoryListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         dao = AppDatabase.getDb(this).getDAO();
+        categoryList = new ArrayList<>();
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Hi, "+ user.getUserFullName());
         setSupportActionBar(toolbar);
@@ -51,6 +72,52 @@ public class MainActivity extends AppCompatActivity {
         tvExpiredCount = findViewById(R.id.tvExpiredCount);
         llEmptyBox = findViewById(R.id.llEmptyBox);
         iv_logout = findViewById(R.id.iv_logout);
+        categoryListAdapter = new CategoryListAdapter(this, categoryList, new RecyclerListClickListener() {
+            @Override
+            public void itemClick(View view, Object item, int position) {
+                
+            }
+
+            @Override
+            public void moreItemClick(View view, Object item, int position, MenuItem menuItem) {
+                Category category = (Category) item;
+                switch (menuItem.getItemId()) {
+                    case R.id.action_delete:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage("Are you sure you want to delete this category?");
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface di, int i) {
+                                di.dismiss();
+                                dao.deleteCategory(category.getCategoryId());
+                                Toast.makeText(getApplicationContext(), "Category deleted!", Toast.LENGTH_LONG).show();
+                                getCategoryList();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", null);
+                        builder.show();
+                        break;
+                    case R.id.action_update:
+                        showEditAddCategory(category);
+                        break;
+                }
+            }
+
+        });
+        RecyclerView recyclerViewTodoList = findViewById(R.id.recyclerViewCategoryList);
+        recyclerViewTodoList.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewTodoList.setHasFixedSize(true);
+        recyclerViewTodoList.setAdapter(categoryListAdapter);
+
+        getCategoryList();   
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.fabNewList);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showEditAddCategory(null);
+            }
+        });
 
         iv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,4 +151,80 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancel", null);
         builder.show();
     }
+
+    private void getCategoryList() {
+        categoryList.clear();
+        List<Category> categoryList1 = dao.getCategorylist(String.valueOf(user.getUserId()));
+        if (categoryList1.isEmpty()) {
+            llEmptyBox.setVisibility(View.VISIBLE);
+        } else {
+            llEmptyBox.setVisibility(View.GONE);
+            categoryList.addAll(dao.getCategorylist(String.valueOf(user.getUserId())));
+        }
+        categoryListAdapter.notifyDataSetChanged();
+    }
+
+    private void showEditAddCategory(final Category category) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.setContentView(R.layout.dlog_add_edit_category_layout);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        final EditText et_catname = dialog.findViewById(R.id.et_catname);
+        final TextView tvHeader = dialog.findViewById(R.id.tvHeader);
+        final Button buttonSave = dialog.findViewById(R.id.btnSave);
+        
+        if (category != null) {
+            et_catname.setText(category.getCategoryName());
+            tvHeader.setText("Edit Category");
+            buttonSave.setText("Update");
+        } else {
+            et_catname.getText().clear();
+            tvHeader.setText("Add Category");
+            buttonSave.setText("Save");
+        }
+        
+        dialog.findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        
+        dialog.findViewById(R.id.btnSave).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(et_catname.getText().toString().trim())) {
+                    et_catname.setError("Please enter category name");
+                    return;
+                }
+                String message = "";
+                Category category1;
+                if (category != null) {
+                    category1 = category;
+                    message = "Category updated!";
+                } else {
+                    category1 = new Category();
+                    message = "Category Added!";
+                }
+                category1.setUserId(String.valueOf(user.getUserId()));
+                category1.setCategoryName(et_catname.getText().toString());
+                category1.setCategoryAddDate(new Date());
+                dao.insertCategory(category1);
+                dialog.dismiss();
+                getCategoryList();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+    }
+
 }
