@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parentView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/llCategoryList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="7dp"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9"
+            android:padding="5dp"
+           >
+
+            <ImageView
+                android:id="@+id/ivCircleView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_baseline_receipt_24" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:orientation="vertical"
+            android:layout_marginLeft="5dp"
+            android:padding="7dp">
+
+
+            <TextView
+                android:id="@+id/tvCategoryName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Category Name"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tvListTaskCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:text="0"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                 />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/ibMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginRight="7dp"
+        app:srcCompat="@drawable/ic_more_vert"
+        app:tint="@color/purple_500" />
+
+
+</RelativeLayout>
