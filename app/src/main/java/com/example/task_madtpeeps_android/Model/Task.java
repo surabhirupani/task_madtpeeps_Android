@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Entity(tableName = "task")
@@ -32,11 +33,33 @@ public class Task {
     @ColumnInfo
     private String taskStatusName;
 
+    @ColumnInfo
+    private String taskRecordingPath;
+
+    @ColumnInfo
+    private ArrayList<String> taskImages;
+
     private boolean isExpanded;//Definition For Expandable RecyclerView
 
     public Task() {
         isExpanded = false;
         taskStatusCode = 0;
+    }
+
+    public String getTaskRecordingPath() {
+        return taskRecordingPath;
+    }
+
+    public void setTaskRecordingPath(String taskRecordingPath) {
+        this.taskRecordingPath = taskRecordingPath;
+    }
+
+    public ArrayList<String> getTaskImages() {
+        return taskImages;
+    }
+
+    public void setTaskImages(ArrayList<String> taskImages) {
+        this.taskImages = taskImages;
     }
 
     public Long getTaskId() {
