@@ -29,6 +29,7 @@ import com.example.task_madtpeeps_android.Database.AppDatabase;
 import com.example.task_madtpeeps_android.Database.DAO;
 import com.example.task_madtpeeps_android.Interfaces.RecyclerListClickListener;
 import com.example.task_madtpeeps_android.Model.Category;
+import com.example.task_madtpeeps_android.Model.Task;
 import com.example.task_madtpeeps_android.Model.User;
 import com.example.task_madtpeeps_android.R;
 import com.example.task_madtpeeps_android.utils.Utils;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView iv_logout;
     private View llEmptyBox;
     private List<Category> categoryList;
+    private List<Integer> taskCount;
     private CategoryListAdapter categoryListAdapter;
     private SimpleDateFormat sdf;
 
@@ -63,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         dao = AppDatabase.getDb(this).getDAO();
-        sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.US);
         categoryList = new ArrayList<>();
+        taskCount = new ArrayList<>();
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Hi, "+ user.getUserFullName());
         setSupportActionBar(toolbar);
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         tvExpiredCount = findViewById(R.id.tvExpiredCount);
         llEmptyBox = findViewById(R.id.llEmptyBox);
         iv_logout = findViewById(R.id.iv_logout);
-        categoryListAdapter = new CategoryListAdapter(this, categoryList, new RecyclerListClickListener() {
+        categoryListAdapter = new CategoryListAdapter(this, categoryList, taskCount, new RecyclerListClickListener() {
             @Override
             public void itemClick(View view, Object item, int position) {
                 Category category = (Category) item;
@@ -162,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getCategoryList() {
         categoryList.clear();
+        taskCount.clear();
         List<Category> categoryList1 = dao.getCategorylist(String.valueOf(user.getUserId()));
         if (categoryList1.isEmpty()) {
             llEmptyBox.setVisibility(View.VISIBLE);
@@ -174,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
             tvContinuesCount.setText(String.valueOf(continuesCount));
             tvCompletedTask.setText(String.valueOf(completedCount));
             tvExpiredCount.setText(String.valueOf(expiredCount));
+            for (int i=0;i<categoryList.size();i++) {
+                String catId = String.valueOf(categoryList.get(i).getCategoryId());
+                List<Task> todoListItems1 = dao.getTasks(catId);
+                taskCount.add(todoListItems1.size());
+            }
         }
         categoryListAdapter.notifyDataSetChanged();
     }
