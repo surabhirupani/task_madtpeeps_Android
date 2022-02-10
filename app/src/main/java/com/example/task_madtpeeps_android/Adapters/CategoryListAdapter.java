@@ -29,12 +29,14 @@ import java.util.Locale;
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
     private RecyclerListClickListener clickListener;
     private List<Category> items;
+    private List<Integer> taskCount;
     private Context context;
     private int current_selected_idx = -1;
 
-    public CategoryListAdapter(Context context, List<Category> items, RecyclerListClickListener clickListener) {
+    public CategoryListAdapter(Context context, List<Category> items, List<Integer> taskCount, RecyclerListClickListener clickListener) {
         this.items = items;
         this.clickListener = clickListener;
+        this.taskCount = taskCount;
     }
 
 
@@ -67,7 +69,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Category categoryList = getItem(position);
         holder.tvCategoryName.setText(categoryList.getCategoryName());
-
+        holder.tvListTaskCount.setText(String.valueOf(taskCount.get(position)));
         holder.parentView.setTag(position);
         holder.parentView.setOnClickListener(new View.OnClickListener() {
             @Override
