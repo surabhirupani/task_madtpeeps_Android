@@ -18,8 +18,7 @@
             app:contentInsetStart="0dp"
             app:contentInsetStartWithNavigation="0dp"
             app:layout_collapseMode="pin"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:titleTextAppearance="@style/TextAppearance.AppCompat.Title"
+           app:titleTextAppearance="@style/TextAppearance.AppCompat.Title"
             app:titleTextColor="@android:color/white">
 
 
@@ -29,7 +28,7 @@
             android:id="@+id/recyclerViewTaskItems"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="15dp" />
+            android:padding="5dp" />
     </LinearLayout>
 
     <LinearLayout
