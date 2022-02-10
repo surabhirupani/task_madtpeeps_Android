@@ -10,13 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Task_madtpeeps_Android">
         <activity
-            android:name=".Activity.LoginActivity"
-            android:windowSoftInputMode="adjustResize"
+            android:name=".Activity.TaskActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".Activity.SignUpActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Activity.SplashActivity"
             android:exported="true">
@@ -28,8 +31,8 @@
         </activity>
         <activity
             android:name=".Activity.MainActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
