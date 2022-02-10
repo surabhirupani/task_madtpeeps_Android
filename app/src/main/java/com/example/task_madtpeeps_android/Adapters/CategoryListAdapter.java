@@ -43,6 +43,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         TextView tvListTaskCount;
         ImageView ibMore;
         ImageView ivCircleView;
+        View parentView;
 
         ViewHolder(View v) {
             super(v);
@@ -50,6 +51,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             tvListTaskCount = v.findViewById(R.id.tvListTaskCount);
             ibMore = v.findViewById(R.id.ibMore);
             ivCircleView = v.findViewById(R.id.ivCircleView);
+            parentView = v.findViewById(R.id.parentView);
         }
     }
 
@@ -65,8 +67,15 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Category categoryList = getItem(position);
         holder.tvCategoryName.setText(categoryList.getCategoryName());
-        
 
+        holder.parentView.setTag(position);
+        holder.parentView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (clickListener == null) return;
+                clickListener.itemClick(v, categoryList, (int) v.getTag());
+            }
+        });
         holder.ibMore.setTag(position);
         holder.ibMore.setOnClickListener(new View.OnClickListener() {
             @Override
