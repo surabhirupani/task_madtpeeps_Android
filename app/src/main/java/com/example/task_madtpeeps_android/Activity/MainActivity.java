@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private View llEmptyBox;
     private List<Category> categoryList;
     private CategoryListAdapter categoryListAdapter;
+    private SimpleDateFormat sdf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         dao = AppDatabase.getDb(this).getDAO();
+        sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         categoryList = new ArrayList<>();
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Hi, "+ user.getUserFullName());
@@ -75,7 +77,12 @@ public class MainActivity extends AppCompatActivity {
         categoryListAdapter = new CategoryListAdapter(this, categoryList, new RecyclerListClickListener() {
             @Override
             public void itemClick(View view, Object item, int position) {
-                
+                Category category = (Category) item;
+                Intent intent = new Intent(MainActivity.this, TaskActivity.class);
+                intent.putExtra("user", new Gson().toJson(user));
+                intent.putExtra("categoryId", category.getCategoryId());
+                intent.putExtra("categoryName", category.getCategoryName());
+                startActivity(intent);
             }
 
             @Override
@@ -89,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface di, int i) {
                                 di.dismiss();
+                                dao.deleteTaskByCategory(category.getCategoryId());
                                 dao.deleteCategory(category.getCategoryId());
                                 Toast.makeText(getApplicationContext(), "Category deleted!", Toast.LENGTH_LONG).show();
                                 getCategoryList();
@@ -160,6 +168,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             llEmptyBox.setVisibility(View.GONE);
             categoryList.addAll(dao.getCategorylist(String.valueOf(user.getUserId())));
+            int continuesCount = dao.getTaskCount(user.getUserId(), "0", sdf.format(new Date()));
+            int completedCount = dao.getTaskCount(user.getUserId(), "1", sdf.format(new Date()));
+            int expiredCount = dao.getTaskCount(user.getUserId(), "-1", sdf.format(new Date()));
+            tvContinuesCount.setText(String.valueOf(continuesCount));
+            tvCompletedTask.setText(String.valueOf(completedCount));
+            tvExpiredCount.setText(String.valueOf(expiredCount));
         }
         categoryListAdapter.notifyDataSetChanged();
     }
@@ -227,4 +241,9 @@ public class MainActivity extends AppCompatActivity {
         dialog.getWindow().setAttributes(lp);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getCategoryList();
+    }
 }
