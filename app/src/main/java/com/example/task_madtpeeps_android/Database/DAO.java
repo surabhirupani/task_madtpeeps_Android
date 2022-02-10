@@ -55,8 +55,8 @@ public interface DAO {
             "END")
     int getTaskCount(Long userId, String countType, String expiry);
 
-    @Query("SELECT * FROM task WHERE taskId = :taskId")
-    List<Task> getTasks(String taskId);
+    @Query("SELECT * FROM task WHERE categoryId = :categoryId")
+    List<Task> getTasks(String categoryId);
     
     @Query("SELECT * FROM task WHERE categoryId = :categoryId ORDER BY CASE :orderType " +
             "WHEN 'taskCreateDate' THEN taskCreateDate " +
