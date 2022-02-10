@@ -31,7 +31,7 @@ import com.example.task_madtpeeps_android.Interfaces.RecyclerListClickListener;
 import com.example.task_madtpeeps_android.Model.Category;
 import com.example.task_madtpeeps_android.Model.User;
 import com.example.task_madtpeeps_android.R;
-import com.example.task_madtpeeps_android.Utils;
+import com.example.task_madtpeeps_android.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
