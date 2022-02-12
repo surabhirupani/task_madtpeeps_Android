@@ -172,18 +172,18 @@ public class MainActivity extends AppCompatActivity {
         } else {
             llEmptyBox.setVisibility(View.GONE);
             categoryList.addAll(dao.getCategorylist(String.valueOf(user.getUserId())));
-            int continuesCount = dao.getTaskCount(user.getUserId(), "0");
-            int completedCount = dao.getTaskCount(user.getUserId(), "1");
-            int expiredCount = dao.getTaskCount(user.getUserId(), "-1");
-            tvContinuesCount.setText(String.valueOf(continuesCount));
-            tvCompletedTask.setText(String.valueOf(completedCount));
-            tvExpiredCount.setText(String.valueOf(expiredCount));
             for (int i=0;i<categoryList.size();i++) {
                 String catId = String.valueOf(categoryList.get(i).getCategoryId());
                 List<Task> todoListItems1 = dao.getTasks(catId);
                 taskCount.add(todoListItems1.size());
             }
         }
+        int continuesCount = dao.getTaskCount(user.getUserId(), "0");
+        int completedCount = dao.getTaskCount(user.getUserId(), "1");
+        int expiredCount = dao.getTaskCount(user.getUserId(), "-1");
+        tvContinuesCount.setText(String.valueOf(continuesCount));
+        tvCompletedTask.setText(String.valueOf(completedCount));
+        tvExpiredCount.setText(String.valueOf(expiredCount));
         categoryListAdapter.notifyDataSetChanged();
     }
 
