@@ -93,7 +93,9 @@ public class SignUpActivity extends AppCompatActivity {
             dao.insertUser(user);
             Toast.makeText(getApplicationContext(), "Sign Up Successfully!", Toast.LENGTH_LONG).show();
             createLoginSession(et_username.getText().toString());
-            openMainActivity(user);
+            User user1 = dao.login(et_username.getText().toString(), et_pwd.getText().toString());
+            if (user1 != null)
+                openMainActivity(user1);
         } else {
             Toast.makeText(getApplicationContext(), "User already registered!", Toast.LENGTH_LONG).show();
         }
