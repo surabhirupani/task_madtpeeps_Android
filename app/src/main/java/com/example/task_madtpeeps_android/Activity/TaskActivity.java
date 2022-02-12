@@ -78,7 +78,7 @@ public class TaskActivity extends AppCompatActivity {
             categoryName = getIntent().getStringExtra("categoryName");
         }
 
-        sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.US);
         dao = AppDatabase.getDb(this).getDAO();
         Toolbar toolbar = findViewById(R.id.toolbar);
 //        toolbar.setNavigationIcon(R.drawable.ic_menu);
@@ -92,28 +92,14 @@ public class TaskActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               
+                Intent intent = new Intent(TaskActivity.this, AddTaskActivity.class);
+                intent.putExtra("categoryId", categoryId);
+                startActivity(intent);
             }
         });
 
         taskList = new ArrayList<>();
         searchedLists = new ArrayList<>();
-//        Task task = new Task();
-//        task.setCategoryId(String.valueOf(categoryId));
-//        task.setTaskName("shdsaj");
-//        task.setTaskDesc("shdgsjhdghasd");
-//        try {
-//            task.setTaskDeadline(sdf.parse("23 jul 2022"));
-//        } catch (ParseException ignored) {
-//        }
-//        task.setTaskStatusCode(0);
-//        task.setExpanded(false);
-//        task.setTaskCreateDate(new Date());
-//        task.setTaskRecordingPath("hdshdfs");
-//        task.setTaskImages(null);
-//        dao.insertTask(task);
-
-
         taskListAdapter = new TaskListAdapter(searchedLists, new RecyclerListItemClick() {
             @Override
             public void endTask(View view, Object item, int position) {
@@ -139,6 +125,10 @@ public class TaskActivity extends AppCompatActivity {
             @Override
             public void editTask(View view, Object item, int position) {
                 Task task = (Task) item;
+                Intent intent = new Intent(TaskActivity.this, AddTaskActivity.class);
+                intent.putExtra("task", task);
+                intent.putExtra("categoryId", categoryId);
+                startActivity(intent);
 //                showAddListItemDialog(task);
             }
 
@@ -146,7 +136,7 @@ public class TaskActivity extends AppCompatActivity {
             public void deleteTask(View view, final Object item, int position) {
                 final Task task = (Task) item;
                 AlertDialog.Builder builder = new AlertDialog.Builder(TaskActivity.this);
-                builder.setTitle("Complete Task");
+                builder.setTitle("Delete Task");
                 builder.setMessage("Are you sure you want to delete task?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -154,7 +144,7 @@ public class TaskActivity extends AppCompatActivity {
                         di.dismiss();
                         dao.deleteTask(task.getTaskId());
                         getTodoListItems();
-                        Toast.makeText(getApplicationContext(), "Task Completed!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Task Deletes!", Toast.LENGTH_LONG).show();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -262,5 +252,11 @@ public class TaskActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getTodoListItems();
     }
 }

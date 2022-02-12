@@ -51,9 +51,9 @@ public interface DAO {
             " WHERE category.userId = :userId AND CASE :countType " +
             "WHEN '0' THEN task.taskStatusCode = 0 " +
             "WHEN '1' THEN task.taskStatusCode = 1 " +
-            "WHEN '-1' THEN task.taskDeadline > :expiry " +
+            "WHEN '-1' THEN task.taskStatusCode = -1 " +
             "END")
-    int getTaskCount(Long userId, String countType, String expiry);
+    int getTaskCount(Long userId, String countType);
 
     @Query("SELECT * FROM task WHERE categoryId = :categoryId")
     List<Task> getTasks(String categoryId);

@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         dao = AppDatabase.getDb(this).getDAO();
-        sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.US);
+        sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         categoryList = new ArrayList<>();
         taskCount = new ArrayList<>();
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -172,9 +172,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             llEmptyBox.setVisibility(View.GONE);
             categoryList.addAll(dao.getCategorylist(String.valueOf(user.getUserId())));
-            int continuesCount = dao.getTaskCount(user.getUserId(), "0", sdf.format(new Date()));
-            int completedCount = dao.getTaskCount(user.getUserId(), "1", sdf.format(new Date()));
-            int expiredCount = dao.getTaskCount(user.getUserId(), "-1", sdf.format(new Date()));
+            int continuesCount = dao.getTaskCount(user.getUserId(), "0");
+            int completedCount = dao.getTaskCount(user.getUserId(), "1");
+            int expiredCount = dao.getTaskCount(user.getUserId(), "-1");
             tvContinuesCount.setText(String.valueOf(continuesCount));
             tvCompletedTask.setText(String.valueOf(completedCount));
             tvExpiredCount.setText(String.valueOf(expiredCount));

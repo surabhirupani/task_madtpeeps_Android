@@ -10,7 +10,7 @@ import com.example.task_madtpeeps_android.Model.Category;
 import com.example.task_madtpeeps_android.Model.Task;
 import com.example.task_madtpeeps_android.Model.User;
 
-@Database(entities = {User.class, Category.class, Task.class}, version = 2, exportSchema = false)
+@Database(entities = {User.class, Category.class, Task.class}, version = 1, exportSchema = false)
 @TypeConverters({com.example.task_madtpeeps_android.Database.TypeConverters.class})
 public abstract class AppDatabase extends RoomDatabase {
 

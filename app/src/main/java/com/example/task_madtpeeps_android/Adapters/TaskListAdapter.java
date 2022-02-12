@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.task_madtpeeps_android.Database.AppDatabase;
+import com.example.task_madtpeeps_android.Database.DAO;
 import com.example.task_madtpeeps_android.Interfaces.RecyclerListItemClick;
 import com.example.task_madtpeeps_android.Model.Task;
 import com.example.task_madtpeeps_android.R;
@@ -17,8 +19,10 @@ import com.example.task_madtpeeps_android.utils.ViewAnimation;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHolder> {
 
@@ -26,11 +30,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     private List<Task> items;
     private SimpleDateFormat sdf;
     private Context context;
+    private DAO dao;
 
     public TaskListAdapter(List<Task> items, RecyclerListItemClick clickListener) {
         this.items = items;
         this.clickListener = clickListener;
-        sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.US);
 
     }
 
@@ -70,6 +75,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_layout, parent, false);
         context = parent.getContext();
+        dao = AppDatabase.getDb(context).getDAO();
         return new ViewHolder(v);
     }
 
@@ -77,17 +83,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final Task task = getItem(position);
         holder.tvItemName.setText(task.getTaskName());
-//        holder.tvItemDeadlineDate.setText(sdf.format(task.getTaskDeadline()));
-        holder.tvItemDeadlineDate.setText("dgshfs");
+        holder.tvItemDeadlineDate.setText(sdf.format(task.getTaskDeadline()));
         holder.tvItemCreateDate.setText(sdf.format(task.getTaskCreateDate()));
-//        Calendar remainingTime = Calendar.getInstance();
-//        remainingTime.setTimeInMillis(task.getTaskDeadline().getTime() - Calendar.getInstance().getTimeInMillis());
-//
-//
-//        Calendar taskTime = Calendar.getInstance();
-//        taskTime.setTimeInMillis(task.getTaskDeadline().getTime() - task.getTaskCreateDate().getTime());
-
-
+        long diff = task.getTaskDeadline().getTime() - Calendar.getInstance().getTimeInMillis();
+        long day = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
         holder.layoutEnded.setTag(position);
         holder.layoutEnded.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,22 +126,33 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             }
         });
 
-        if (task.getTaskStatusCode() != 0) {
-            holder.llActionLayout.setVisibility(View.GONE);
+        if (task.getTaskStatusCode() == 1) {
+            holder.llActionLayout.setVisibility(View.VISIBLE);
+            holder.layoutEnded.setVisibility(View.GONE);
             holder.tvRemainingDay.setVisibility(View.GONE);
             holder.tvItemStatus.setText("Completed");
+            holder.tvItemStatus.setTextColor(context.getResources().getColor(R.color.teal_700));
         } else {
             holder.llActionLayout.setVisibility(View.VISIBLE);
+            holder.layoutEnded.setVisibility(View.VISIBLE);
             holder.tvRemainingDay.setVisibility(View.VISIBLE);
-//            holder.tvRemainingDay.setText(String.valueOf(remainingTime.get(Calendar.DAY_OF_YEAR))+" days left");
-           holder.tvRemainingDay.setText("1 day left");
-//            if (remainingTime.before(Calendar.getInstance())) {
-//                holder.tvItemStatus.setText("Continues");
-//                holder.tvRemainingDay.setTextColor(context.getResources().getColor(R.color.grey_40));
-//            } else {
-//                holder.tvItemStatus.setText("Expired");
-//                holder.tvRemainingDay.setTextColor(context.getResources().getColor(R.color.red_500));
-//            }
+            holder.tvRemainingDay.setText(String.valueOf(day+1)+" days left");
+            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+            if(sdf1.format(task.getTaskDeadline()).equals(sdf1.format(new Date()))) {
+                holder.tvRemainingDay.setText("Due Today");
+            }
+//           holder.tvRemainingDay.setText("1 day left");
+            if (day+1 > 0) {
+                holder.tvItemStatus.setText("Continues");
+                holder.tvItemStatus.setTextColor(context.getResources().getColor(R.color.grey_40));
+                holder.tvRemainingDay.setTextColor(context.getResources().getColor(R.color.grey_40));
+            } else {
+                task.setTaskStatusCode(-1);
+                dao.insertTask(task);
+                holder.tvRemainingDay.setVisibility(View.GONE);
+                holder.tvItemStatus.setText("Expired");
+                holder.tvItemStatus.setTextColor(context.getResources().getColor(R.color.red_500));
+            }
             holder.parentView.setBackgroundColor(context.getResources().getColor(R.color.white));
         }
 

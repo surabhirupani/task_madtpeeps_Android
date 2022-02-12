@@ -19,7 +19,7 @@ import com.example.task_madtpeeps_android.Database.AppDatabase;
 import com.example.task_madtpeeps_android.Database.DAO;
 import com.example.task_madtpeeps_android.Model.User;
 import com.example.task_madtpeeps_android.R;
-import com.example.task_madtpeeps_android.Utils;
+import com.example.task_madtpeeps_android.utils.Utils;
 import com.google.gson.Gson;
 
 public class SignUpActivity extends AppCompatActivity {
