@@ -4,11 +4,12 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 @Entity(tableName = "task")
-public class Task {
+public class Task implements Serializable {
     @PrimaryKey
     private Long taskId;
 
@@ -36,7 +37,7 @@ public class Task {
     @ColumnInfo
     private String taskRecordingPath;
 
-    @ColumnInfo
+    @ColumnInfo(name = "taskImages")
     private ArrayList<String> taskImages;
 
     private boolean isExpanded;//Definition For Expandable RecyclerView
